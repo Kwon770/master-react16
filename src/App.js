@@ -1,23 +1,25 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
+
+class ReturnTypes extends Component {
+  // React16 : component, null, 한개 element 만 반환가능하던 예전과 달리
+  // string, 여러 element를 반환 가능
+  // <Fragment></Fragment> = <></>
+  render() {
+    return (
+      <Fragment>
+        <header></header>
+        <div></div>
+        <footer></footer>
+      </Fragment>
+    );
+  }
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ReturnTypes />
+    </>
   );
 }
 
