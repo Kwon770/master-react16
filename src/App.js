@@ -1,4 +1,13 @@
 import React, { Component, Fragment } from "react";
+import { createPortal } from "react-dom";
+
+class Portals extends Component {
+  render() {
+    return createPortal(<Message />, document.getElementById("touchme"));
+  }
+}
+
+const Message = () => "Just touched it!";
 
 class ReturnTypes extends Component {
   // React16 : component, null, 한개 element 만 반환가능하던 예전과 달리
@@ -15,12 +24,16 @@ class ReturnTypes extends Component {
   }
 }
 
-function App() {
-  return (
-    <>
-      <ReturnTypes />
-    </>
-  );
+class App extends Component {
+  render() {
+    return (
+      <>
+        <Portals />
+        App
+        <ReturnTypes />
+      </>
+    );
+  }
 }
 
 export default App;
