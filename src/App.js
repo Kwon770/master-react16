@@ -1,84 +1,43 @@
-import React, { Component, Fragment } from "react";
-import { createPortal } from "react-dom";
+import React, { Component } from "react";
 
-const BoundaryHOC = ProtectedComponent =>
-  class Boundary extends Component {
-    state = {
-      hasError: false
+const MAX_PIZZAS = 20;
+
+const eatPizza = (state, props) => {
+  const { pizzas } = state;
+  if (pizzas < MAX_PIZZAS) {
+    return {
+      pizzas: pizzas + 1
     };
-    componentDidCatch = () => {
-      this.setState({
-        hasError: true
-      });
-    };
-    render() {
-      const { hasError } = this.state;
-      if (hasError) {
-        return <ErrorFallback />;
-      } else {
-        return <ProtectedComponent />;
-      }
-    }
-  };
+  } else {
+    return null;
+  }
+};
 
-const ErrorFallback = () => "Sorry, something went wrong";
-
-class ErrorMaker extends Component {
+class Controlled extends Component {
   state = {
-    freinds: ["a1", "a2", "a3"]
-  };
-  componentDidMount = () => {
-    setTimeout(() => {
-      this.setState({
-        freinds: undefined
-      });
-    }, 2000);
+    pizzas: 0
   };
   render() {
-    const { freinds } = this.state;
-    return freinds.map(freinds => ` ${freinds} `);
-  }
-}
-
-const PErrorMaker = BoundaryHOC(ErrorMaker);
-
-class Portals extends Component {
-  render() {
-    return createPortal(<Message />, document.getElementById("touchme"));
-  }
-}
-
-const PPortals = BoundaryHOC(Portals);
-
-const Message = () => "Just touched it!";
-
-class ReturnTypes extends Component {
-  // React16 : component, null, 한개 element 만 반환가능하던 예전과 달리
-  // string, 여러 element를 반환 가능
-  // <Fragment></Fragment> = <></>
-  render() {
+    const { pizzas } = this.state;
     return (
-      <Fragment>
-        <header></header>
-        <div></div>
-        <footer></footer>
-      </Fragment>
+      <button onClick={this._handleClick}>{`I ate ${pizzas} ${
+        pizzas === 1 ? "pizza" : "pizzas"
+      }`}</button>
     );
   }
+  _handleClick = () => {
+    this.setState(eatPizza);
+  };
 }
 
 class App extends Component {
   render() {
-    const { hasError } = this.state;
     return (
       <>
-        <PPortals />
-        App
-        <ReturnTypes />
-        <PErrorMaker />
+        <Controlled />
       </>
     );
   }
 }
 
-export default BoundaryHOC(App);
+export default App;
